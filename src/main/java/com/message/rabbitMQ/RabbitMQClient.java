@@ -1,4 +1,4 @@
-package com.message.queue;
+package com.message.rabbitMQ;
 
 import com.message.error.BuilderException;
 import com.message.utils.TextUtils;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeoutException;
  * @author Nguyen Van Do
  * @email nguyendo94vn@gmail.com
  */
-public final class MessagePortClient {
+public final class RabbitMQClient {
 
     private ConnectionFactory factory;
     private Connection connection;
@@ -28,11 +28,11 @@ public final class MessagePortClient {
     private int connectionTimeout;
     private int handshakeTimeout;
 
-    public static MessagePortClient CreatePort() {
-        return new MessagePortClient();
+    public static RabbitMQClient CreatePort() {
+        return new RabbitMQClient();
     }
 
-    private MessagePortClient() {
+    private RabbitMQClient() {
         this.factory = new ConnectionFactory();
         this.virtualHost = "/";
         // set timeout = 10s
@@ -40,42 +40,42 @@ public final class MessagePortClient {
         this.handshakeTimeout = 10000;
     }
 
-    public MessagePortClient withUsername(String username) {
+    public RabbitMQClient withUsername(String username) {
         this.username = username;
         return this;
     }
 
-    public MessagePortClient withPassword(String password) {
+    public RabbitMQClient withPassword(String password) {
         this.password = password;
         return this;
     }
 
-    public MessagePortClient withHost(String host) {
+    public RabbitMQClient withHost(String host) {
         this.host = host;
         return this;
     }
 
-    public MessagePortClient withTLS(boolean isTls) {
+    public RabbitMQClient withTLS(boolean isTls) {
         port = isTls ? 5671: 5672;
         return this;
     }
 
-    public MessagePortClient withVirtualHost(String virtualHost) {
+    public RabbitMQClient withVirtualHost(String virtualHost) {
         this.virtualHost = virtualHost;
         return this;
     }
 
-    public MessagePortClient withConnectionTimeout(int connectionTimeout) {
+    public RabbitMQClient withConnectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
     }
 
-    public MessagePortClient withHandshakeTimeout(int handshakeTimeout) {
+    public RabbitMQClient withHandshakeTimeout(int handshakeTimeout) {
         this.handshakeTimeout= handshakeTimeout;
         return this;
     }
 
-    public MessagePortClient build() throws BuilderException {
+    public RabbitMQClient build() throws BuilderException {
         if (TextUtils.isEmpty(username)) {
             throw new BuilderException("Missing username");
         }
