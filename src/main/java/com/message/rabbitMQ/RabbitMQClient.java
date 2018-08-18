@@ -106,6 +106,7 @@ public final class RabbitMQClient {
     public void openConnection() throws IOException, TimeoutException {
         connection = factory.newConnection();
         channel = connection.createChannel();
+
     }
 
     public void closeConnection() throws IOException, TimeoutException {
