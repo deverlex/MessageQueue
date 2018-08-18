@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'microservice'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'com.rabbitmq', name: 'amqp-client', version: '5.2.0'
+    compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
+}
