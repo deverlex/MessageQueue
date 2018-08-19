@@ -1,2 +1,6 @@
 
 \.idea/
+
+*.bin
+
+\.gradle/4\.4/fileHashes/
