@@ -1,7 +1,5 @@
 package com.message.rabbitMQ;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.message.queue.Publisher;
 import com.message.rabbitMQ.exchanges.DirectExchange;
 import com.message.rabbitMQ.exchanges.Exchange;
@@ -13,6 +11,10 @@ import com.rabbitmq.client.Channel;
 import java.io.IOException;
 import java.util.function.Supplier;
 
+/**
+ * @author Nguyen Van Do
+ * @email nguyendo94vn@gmail.com
+ */
 public class RabbitMQPublisher implements Publisher<PublishMessage> {
 
     private RabbitMQClient rabbitMQClient;
@@ -25,9 +27,9 @@ public class RabbitMQPublisher implements Publisher<PublishMessage> {
         if (exchange instanceof DirectExchange) {
             this.exchangeCreator.createDirectExchange((DirectExchange) exchange);
         } else if (exchange instanceof TopicExchange) {
-
+            this.exchangeCreator.createTopicExchange((TopicExchange) exchange);
         } else if (exchange instanceof FanoutExchange) {
-
+            this.exchangeCreator.createFanoutExchange((FanoutExchange) exchange);
         }
     }
 

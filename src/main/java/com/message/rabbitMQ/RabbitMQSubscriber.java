@@ -17,6 +17,7 @@ public class RabbitMQSubscriber implements Subscriber<JsonNode> {
         this.rabbitMQClient = rabbitMQClient;
     }
 
+    // tag = queue
     @Override
     public CompletableFuture<JsonNode> receive(String tag) throws IOException {
         CompletableFuture<JsonNode> future = new CompletableFuture<>();
@@ -24,7 +25,6 @@ public class RabbitMQSubscriber implements Subscriber<JsonNode> {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 ObjectMapper mapper = new ObjectMapper();
-
                 com.message.rabbitMQ.models.Envelope env = new com.message.rabbitMQ.models.Envelope();
                 env.setDeliveryTag(envelope.getDeliveryTag());
                 env.setExchange(envelope.getExchange());
@@ -51,6 +51,7 @@ public class RabbitMQSubscriber implements Subscriber<JsonNode> {
                 future.complete(mapper.convertValue(message, JsonNode.class));
             }
         };
+
         rabbitMQClient.getChannel().basicConsume(tag, true, consumer);
         return future;
     }
