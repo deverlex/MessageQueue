@@ -70,8 +70,13 @@ public final class RabbitMQClient {
         return this;
     }
 
-    public RabbitMQClient withTLS(boolean isTls) {
+    public RabbitMQClient withDefaultTLS(boolean isTls) {
         port = isTls ? 5671: 5672;
+        return this;
+    }
+
+    public RabbitMQClient withPort(int port) {
+        this.port = port;
         return this;
     }
 
