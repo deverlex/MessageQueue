@@ -6,7 +6,7 @@ package com.message;
  */
 public enum QueueType {
 
-    RABBIT_MQ("rabbitMQ");
+    RABBIT_MQ(Named.RABBIT_MQ);
 
     private String type;
 
@@ -16,5 +16,9 @@ public enum QueueType {
 
     public String type() {
         return type;
+    }
+
+    public static class Named {
+        public static final String RABBIT_MQ = "rabbitMQ";
     }
 }

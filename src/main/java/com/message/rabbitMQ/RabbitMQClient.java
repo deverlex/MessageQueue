@@ -7,6 +7,8 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -28,8 +30,21 @@ public final class RabbitMQClient {
     private int connectionTimeout;
     private int handshakeTimeout;
 
-    public static RabbitMQClient CreatePort() {
-        return new RabbitMQClient();
+    private static Map<String, RabbitMQClient> rabbitMQClients = new ConcurrentHashMap<>();
+    private static final String DEFAULT_TAG = "default";
+
+    public static RabbitMQClient CreateConnection() {
+        return CreateConnection(DEFAULT_TAG);
+    }
+
+    public static RabbitMQClient CreateConnection(String tag) {
+        RabbitMQClient rabbitMQClient = rabbitMQClients.get(tag);
+        if (rabbitMQClient != null)
+            return rabbitMQClient;
+
+        rabbitMQClient = new RabbitMQClient();
+        rabbitMQClients.put(tag, rabbitMQClient);
+        return rabbitMQClient;
     }
 
     private RabbitMQClient() {
@@ -101,6 +116,10 @@ public final class RabbitMQClient {
         factory.setHandshakeTimeout(handshakeTimeout);
 
         return this;
+    }
+
+    public Channel getChannel() {
+        return channel;
     }
 
     public void openConnection() throws IOException, TimeoutException {
