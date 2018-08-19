@@ -1,9 +1,8 @@
 package com.message.queue;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.message.rabbitMQ.SubscribeListener;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Nguyen Van Do
@@ -11,5 +10,5 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface Subscriber<T> {
 
-    CompletableFuture<T> receive(String tag) throws IOException;
+    void receive(String tag, SubscribeListener<T> listener) throws IOException;
 }

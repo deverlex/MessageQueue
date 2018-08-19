@@ -9,7 +9,7 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
-public class RabbitMQSubscriber implements Subscriber<JsonNode> {
+public class RabbitMQSubscriber implements Subscriber<SubscribeMessage> {
 
     private RabbitMQClient rabbitMQClient;
 
@@ -19,8 +19,7 @@ public class RabbitMQSubscriber implements Subscriber<JsonNode> {
 
     // tag = queue
     @Override
-    public CompletableFuture<JsonNode> receive(String tag) throws IOException {
-        CompletableFuture<JsonNode> future = new CompletableFuture<>();
+    public void receive(String tag,  SubscribeListener<SubscribeMessage> listener) throws IOException {
         Consumer consumer = new DefaultConsumer(rabbitMQClient.getChannel()) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
@@ -47,12 +46,9 @@ public class RabbitMQSubscriber implements Subscriber<JsonNode> {
                 props.setType(properties.getType());
                 props.setReplyTo(properties.getReplyTo());
 
-                SubscribeMessage message = new SubscribeMessage(consumerTag, env, props, body);
-                future.complete(mapper.convertValue(message, JsonNode.class));
+                listener.accepted(new SubscribeMessage(consumerTag, env, props, body));
             }
         };
-
         rabbitMQClient.getChannel().basicConsume(tag, true, consumer);
-        return future;
     }
 }
