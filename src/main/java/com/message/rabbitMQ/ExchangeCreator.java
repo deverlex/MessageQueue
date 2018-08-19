@@ -24,15 +24,17 @@ class ExchangeCreator {
         Channel channel = rabbitMQClient.getChannel();
         channel.exchangeDeclare(directEx.getExchangeName(), ExchangeType.DIRECT.type(), directEx.isDurable());
         channel.queueDeclare(directEx.getQueueName(), directEx.isDurable(), directEx.isExclusive(),
-                    directEx.isAutoDelete(), directEx.getQueueArgs());
+                directEx.isAutoDelete(), directEx.getQueueArgs());
         return channel.queueBind(directEx.getQueueName(), directEx.getExchangeName(),
                 directEx.getRoutingKey(), directEx.getBindQueueArgs());
     }
 
-    public AMQP.Queue.BindOk createTopicExchange(TopicExchange topicExchange) {
+    public AMQP.Queue.BindOk createTopicExchange(TopicExchange topicEx) throws IOException {
         Channel channel = rabbitMQClient.getChannel();
-
-        return null;
+        channel.exchangeDeclare(topicEx.getExchangeName(), ExchangeType.TOPIC.type(), topicEx.isDurable());
+        channel.queueDeclare(topicEx.getQueueName(), topicEx.isDurable(), topicEx.isExclusive(),
+                topicEx.isAutoDelete(), topicEx.getBindQueueArgs());
+        return channel.queueBind(topicEx.getQueueName(), topicEx.getExchangeName(), topicEx.getRoutingPattern());
     }
 
     public AMQP.Queue.BindOk createFanoutExchange(FanoutExchange fanoutExchange) {

@@ -2,6 +2,10 @@ package com.message.utils;
 
 import java.io.*;
 
+/**
+ * @author Nguyen Van Do
+ * @email nguyendo94vn@gmail.com
+ */
 public class ObjectUtils {
 
     public static byte[] serialize(Object obj) throws IOException {

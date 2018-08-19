@@ -1,14 +1,16 @@
 package com.message.rabbitMQ;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.message.queue.Subscriber;
 import com.message.rabbitMQ.models.SubscribeMessage;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 
+/**
+ * @author Nguyen Van Do
+ * @email nguyendo94vn@gmail.com
+ */
 public class RabbitMQSubscriber implements Subscriber<SubscribeMessage> {
 
     private RabbitMQClient rabbitMQClient;
