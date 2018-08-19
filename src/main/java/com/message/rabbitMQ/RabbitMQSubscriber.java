@@ -24,7 +24,30 @@ public class RabbitMQSubscriber implements Subscriber<JsonNode> {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 ObjectMapper mapper = new ObjectMapper();
-                SubscribeMessage message = new SubscribeMessage(consumerTag, envelope, properties, body);
+
+                com.message.rabbitMQ.models.Envelope env = new com.message.rabbitMQ.models.Envelope();
+                env.setDeliveryTag(envelope.getDeliveryTag());
+                env.setExchange(envelope.getExchange());
+                env.setRedeliver(envelope.isRedeliver());
+                env.setRoutingKey(envelope.getRoutingKey());
+
+                com.message.rabbitMQ.models.BasicProperties props = new com.message.rabbitMQ.models.BasicProperties();
+                props.setAppId(properties.getAppId());
+                props.setClusterId(properties.getClusterId());
+                props.setContentEncoding(properties.getContentEncoding());
+                props.setContentType(properties.getContentType());
+                props.setCorrelationId(properties.getCorrelationId());
+                props.setDeliveryMode(properties.getDeliveryMode());
+                props.setExpiration(properties.getExpiration());
+                props.setUserId(properties.getUserId());
+                props.setHeaders(properties.getHeaders());
+                props.setPriority(properties.getPriority());
+                props.setMessageId(properties.getMessageId());
+                props.setTimestamp(properties.getTimestamp());
+                props.setType(properties.getType());
+                props.setReplyTo(properties.getReplyTo());
+
+                SubscribeMessage message = new SubscribeMessage(consumerTag, env, props, body);
                 future.complete(mapper.convertValue(message, JsonNode.class));
             }
         };

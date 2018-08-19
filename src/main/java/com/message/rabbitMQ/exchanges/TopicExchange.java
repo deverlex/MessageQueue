@@ -1,5 +1,5 @@
 package com.message.rabbitMQ.exchanges;
 
-public class TopicExchange {
+public class TopicExchange extends Exchange {
 
 }

@@ -1,13 +1,14 @@
-package com.message.rabbitMQ.exchanges;
+package com.message.rabbitMQ;
 
 import com.message.rabbitMQ.ExchangeType;
 import com.message.rabbitMQ.RabbitMQClient;
+import com.message.rabbitMQ.exchanges.DirectExchange;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 
 import java.io.IOException;
 
-public class ExchangeCreator {
+class ExchangeCreator {
 
     private RabbitMQClient rabbitMQClient;
 
