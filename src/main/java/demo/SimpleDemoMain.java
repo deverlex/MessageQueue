@@ -11,7 +11,7 @@ import com.message.utils.ObjectUtils;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
-public class DemoMain {
+public class SimpleDemoMain {
 
     public static void main(String[] args) {
         createSender();
