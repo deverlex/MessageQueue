@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
  * @author Nguyen Van Do
  * @email nguyendo94vn@gmail.com
  */
-public interface Subscriber {
+public interface Subscriber<T> {
 
-    CompletableFuture<JsonNode> receiver(String tag) throws IOException;
+    CompletableFuture<T> receive(String tag) throws IOException;
 }

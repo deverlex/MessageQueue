@@ -10,7 +10,7 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
-public class RabbitMQSubscriber implements Subscriber {
+public class RabbitMQSubscriber implements Subscriber<JsonNode> {
 
     private RabbitMQClient rabbitMQClient;
 
@@ -19,7 +19,7 @@ public class RabbitMQSubscriber implements Subscriber {
     }
 
     @Override
-    public CompletableFuture<JsonNode> receiver(String tag) throws IOException {
+    public CompletableFuture<JsonNode> receive(String tag) throws IOException {
         CompletableFuture<JsonNode> future = new CompletableFuture<>();
         Consumer consumer = new DefaultConsumer(rabbitMQClient.getChannel()) {
             @Override

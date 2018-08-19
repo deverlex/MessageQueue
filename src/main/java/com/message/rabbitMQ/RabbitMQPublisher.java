@@ -8,7 +8,7 @@ import com.rabbitmq.client.Channel;
 
 import java.util.function.Supplier;
 
-public class RabbitMQPublisher implements Publisher {
+public class RabbitMQPublisher implements Publisher<PublishMessage> {
 
     private RabbitMQClient rabbitMQClient;
 
@@ -17,12 +17,10 @@ public class RabbitMQPublisher implements Publisher {
     }
 
     @Override
-    public Supplier<Boolean> send(JsonNode object) {
+    public Supplier<Boolean> send(PublishMessage message) {
         return () -> {
             Channel channel = rabbitMQClient.getChannel();
             try {
-                ObjectMapper mapper = new ObjectMapper();
-                PublishMessage message = mapper.treeToValue(object, PublishMessage.class);
                 channel.basicPublish(
                         message.getExchange(), message.getRoutingKey(), message.isMandatory(),
                         message.getBasicProperties(), message.getBody()
