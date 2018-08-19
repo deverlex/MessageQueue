@@ -2,7 +2,6 @@ package com.message.rabbitMQ;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.message.queue.Subscriber;
 import com.message.rabbitMQ.models.SubscribeMessage;
 import com.rabbitmq.client.*;
