@@ -1,12 +1,15 @@
 package com.message.queue;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 /**
  * @author Nguyen Van Do
  * @email nguyendo94vn@gmail.com
  */
-public interface Publisher<T> {
+public interface Publisher {
 
-    CompletableFuture<T> send(T t);
+    Supplier<Boolean> send(JsonNode object);
 }

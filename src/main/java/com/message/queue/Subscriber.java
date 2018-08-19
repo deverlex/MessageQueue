@@ -11,5 +11,5 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface Subscriber {
 
-    CompletableFuture<JsonNode> receiver(String queue) throws IOException;
+    CompletableFuture<JsonNode> receiver(String tag) throws IOException;
 }
