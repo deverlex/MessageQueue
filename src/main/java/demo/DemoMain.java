@@ -1,16 +1,13 @@
 package demo;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.message.rabbitMQ.RabbitMQClient;
 import com.message.rabbitMQ.RabbitMQPublisher;
 import com.message.rabbitMQ.RabbitMQSubscriber;
+import com.message.rabbitMQ.SubscribeListener;
 import com.message.rabbitMQ.exchanges.DirectExchange;
 import com.message.rabbitMQ.models.PublishMessage;
-import com.message.rabbitMQ.models.SubscribeMessage;
 
-import java.util.function.BiConsumer;
+import java.util.concurrent.CompletableFuture;
 
 public class DemoMain {
 
@@ -39,8 +36,11 @@ public class DemoMain {
             PublishMessage message = new PublishMessage();
             message.setExchange("exchange-1");
             message.setRoutingKey("direct-1");
-            message.setBody("I'm spiderman".getBytes());
-            publisher.send(message).get();
+
+            for (int i = 0; i< 1000000; ++i) {
+                message.setBody(("I'm spider man " + i).getBytes());
+                CompletableFuture.supplyAsync(publisher.send(message)).get();
+            }
 
             rabbitMQClient.closeConnection();
         } catch (Exception e) {
@@ -59,20 +59,10 @@ public class DemoMain {
 
             // demo in here
             RabbitMQSubscriber subscriber = new RabbitMQSubscriber(rabbitMQClient);
-            subscriber.receive("queue-direct-1").whenComplete(new BiConsumer<JsonNode, Throwable>() {
-                @Override
-                public void accept(JsonNode jsonNode, Throwable throwable) {
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        SubscribeMessage message = mapper.treeToValue(jsonNode, SubscribeMessage.class);
-                        System.out.println(new String(message.getBody()));
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                }
+            subscriber.receive("queue-direct-1", message -> {
+                System.out.println(new String(message.getBody()));
             });
 
-            rabbitMQClient.closeConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
